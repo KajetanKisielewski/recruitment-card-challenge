@@ -1,38 +1,61 @@
 export default function(){
-    const cardNumberInput = document.getElementById("card-number");
-    const cardHolderInput = document.getElementById("card-name");
-    const monthSelect = document.getElementById("expiration-month");
-    const yearSelect = document.getElementById("expiration-year");
+    const elements = {
+        cardNumberInput: document.getElementById("card-number"),
+        cardHolderInput: document.getElementById("card-name"),
+        monthSelect: document.getElementById("expiration-month"),
+        yearSelect: document.getElementById("expiration-year"),
+        cardNumberDisplay: document.querySelector(".card__number"),
+        cardHolderDisplay: document.querySelector(".card__holder-name"),
+        monthDisplay: document.querySelector(".card__expires-month"),
+        yearDisplay: document.querySelector(".card__expires-year")
+    };
 
-    const cardNumberDisplay = document.querySelector(".card__number");
-    const cardHolderDisplay = document.querySelector(".card__holder-name");
-    const monthDisplay = document.querySelector(".card__expires-month");
-    const yearDisplay = document.querySelector(".card__expires-year");
+    const formatCardNumber = (value) => {
+        const cleanedValue = value.replace(/\D/g, "");
+        const formattedCardNumber = cleanedValue.padEnd(16, '#');
+        return formattedCardNumber.match(/.{1,4}/g).join(" ");
+    };
 
-    if (cardNumberInput && cardNumberDisplay) {
-        cardNumberInput.addEventListener("input", function () {
-            let formattedNumber = this.value.replace(/\D/g, "");
-            console.log('for', formattedNumber)
-            formattedNumber = formattedNumber.replace(/(\d{4})(?=\d)/g, "$1 ");
-            cardNumberDisplay.textContent = formattedNumber || "#### #### #### ####";
-        });
+    const formatCardHolder = (value) => value || "AD SOYAD";
+
+    const formatExpiryDate = () => {
+        const month = elements.monthSelect.value !== "Month" ? elements.monthSelect.value : "MM";
+        const year = elements.yearSelect.value !== "Year" ? elements.yearSelect.value.slice(-2) : "YY";
+        return { month, year };
+    };
+
+    const updateCardDisplay = (field, value) => {
+        if (field) {
+            field.textContent = value;
+        }
+    };
+
+    const handleCardNumberInput = (e) => {
+        const formattedNumber = formatCardNumber(e.target.value);
+        updateCardDisplay(elements.cardNumberDisplay, formattedNumber);
+    };
+
+    const handleCardHolderInput = (e) => {
+        const formattedHolder = formatCardHolder(e.target.value);
+        updateCardDisplay(elements.cardHolderDisplay, formattedHolder);
+    };
+
+    const handleExpiryChange = () => {
+        const { month, year } = formatExpiryDate();
+        updateCardDisplay(elements.monthDisplay, `${month}/`);
+        updateCardDisplay(elements.yearDisplay, year);
+    };
+
+    if (elements.cardNumberInput) {
+        elements.cardNumberInput.addEventListener("input", handleCardNumberInput);
     }
 
-    if (cardHolderInput && cardHolderDisplay) {
-        cardHolderInput.addEventListener("input", function () {
-            cardHolderDisplay.textContent = this.value || "AD SOYAD";
-        });
+    if (elements.cardHolderInput) {
+        elements.cardHolderInput.addEventListener("input", handleCardHolderInput);
     }
 
-    function updateExpiryDate() {
-        const month = monthSelect.value !== "Month" ? monthSelect.value : "MM";
-        const year = yearSelect.value !== "Year" ? yearSelect.value.slice(-2) : "YY";
-        monthDisplay.textContent = `${month}/`;
-        yearDisplay.textContent = year;
-    }
-
-    if (monthSelect && yearSelect && monthDisplay && yearDisplay) {
-        monthSelect.addEventListener("change", updateExpiryDate);
-        yearSelect.addEventListener("change", updateExpiryDate);
+    if (elements.monthSelect && elements.yearSelect) {
+        elements.monthSelect.addEventListener("change", handleExpiryChange);
+        elements.yearSelect.addEventListener("change", handleExpiryChange);
     }
 }
