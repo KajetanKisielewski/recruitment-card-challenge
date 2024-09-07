@@ -1,0 +1,93 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .card-preview {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: red;
+    border-radius: 20px;
+
+    //background-image: url("../../images/background.jpg");
+    //background-size: cover;
+
+    .card__image {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      img {
+        padding: 15px;
+        width: 10%;
+      }
+    }
+
+    .card__number {
+      padding-top: 20px;
+      padding-left: 10px;
+      font-size: 20px;
+      width: 100%;
+    }
+
+    .card__holder,
+    .card__expires {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      width: calc(50% - 10px);
+    }
+
+    .card__holder {
+      padding-left: 10px;
+    }
+
+    .card__expires {
+      padding-right: 10px;
+      text-align: right;
+    }
+  }
+
+  .card__form {
+    border: 1px solid black;
+    margin-top: 20px;
+
+    .card__number,
+    .card__name {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .expiration-cvv-row {
+      padding: 10px;
+      display: flex;
+
+      .expiration-group {
+        display: flex;
+        flex-wrap: wrap;
+
+        label {
+          width: 100%;
+        }
+      }
+
+      .cvv-group {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+      }
+    }
+
+    button {
+      position: relative;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%);
+    }
+  }
+}

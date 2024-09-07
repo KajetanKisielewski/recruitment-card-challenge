@@ -1,23 +1,43 @@
 extends defaults/layout.pug
 include defaults/mixins.pug
+
 block content
     .container
-        .card__preview
-            .card__preview--number XXXX XXXX XXXX XXXX
-            .card__preview--holder Jan Kowalski
+        .card-preview
+            .card__image
+                +addPicture('chip.png', 'card__image__chip')
+                +addPicture('mastercard.png', 'card__image__mastercard')
+            .card__number #### #### #### ####
+            .card__holder
+                span.card__holder-text Card Holder
+                span.card__holder-name AD SOYAD
+            .card__expires
+                span.card__expires-text Expires
+                span.card__expires-month MM/
+                span.card__expires-year YY
+
+
         form.card__form
-            input.card__form--input(type="text" placeholder="Card number")
-            label(for="card__form--select")
-            select#card__form--select
-                option 01
-                option 02
-                option 03
-                option 04
-                option 05
-                option 06
-                option 07
-                option 08
-                option 09
-                option 10
-                option 11
-                option 12
+            .card__number
+                label(for="card-number") Card Number
+                input#card-number.card__input(type="text", placeholder="Enter card number")
+            .card__name
+                label(for="card-name") Card Name
+                input#card-name.card__input(type="text", placeholder="Enter card holder name")
+
+            .expiration-cvv-row
+                .expiration-group
+                    label(for="expiration-month") Expiration Date
+                    select#expiration-month.card__select
+                        option Month
+                        option January
+                        option February
+                    select#expiration-year.card__select
+                        option Year
+                        option 2023
+                        option 2024
+                .cvv-group
+                    label(for="cvv") CVV
+                    input#cvv.card__input(type="text", placeholder="CVV", maxlength="3")
+
+            button.card__submit(type="submit") Submit
