@@ -4,16 +4,21 @@ export default function(){
         cardHolderInput: document.getElementById("card-name"),
         monthSelect: document.getElementById("expiration-month"),
         yearSelect: document.getElementById("expiration-year"),
-        cardNumberDisplay: document.querySelector(".card__number"),
-        cardHolderDisplay: document.querySelector(".card__holder-name"),
-        monthDisplay: document.querySelector(".card__expires-month"),
-        yearDisplay: document.querySelector(".card__expires-year")
+        cardNumberDisplay: document.querySelector(".card-preview__number"),
+        cardHolderDisplay: document.querySelector(".card-preview__holder-name"),
+        monthDisplay: document.querySelector(".card-preview__expires-month"),
+        yearDisplay: document.querySelector(".card-preview__expires-year")
     };
 
-    const formatCardNumber = (value) => {
+    const formatCardNumberForDisplay = (value) => {
         const cleanedValue = value.replace(/\D/g, "");
         const formattedCardNumber = cleanedValue.padEnd(16, '#');
         return formattedCardNumber.match(/.{1,4}/g).join(" ");
+    };
+
+    const formatCardNumberForInput = (value) => {
+        const cleanedValue = value.replace(/\D/g, "");
+        return cleanedValue.match(/.{1,4}/g)?.join(" ") || "";
     };
 
     const formatCardHolder = (value) => value || "AD SOYAD";
@@ -31,13 +36,18 @@ export default function(){
     };
 
     const handleCardNumberInput = (e) => {
-        const formattedNumber = formatCardNumber(e.target.value);
-        updateCardDisplay(elements.cardNumberDisplay, formattedNumber);
+        const rawValue = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+        const limitedValue = rawValue.slice(0, 16);
+        e.target.value = formatCardNumberForInput(limitedValue);
+        const formattedNumberForDisplay = formatCardNumberForDisplay(limitedValue);
+        updateCardDisplay(elements.cardNumberDisplay, formattedNumberForDisplay);
     };
 
     const handleCardHolderInput = (e) => {
-        const formattedHolder = formatCardHolder(e.target.value);
+        const value = e.target.value.replace(/[^a-zA-Z\s]/g, '')
+        const formattedHolder = formatCardHolder(value);
         updateCardDisplay(elements.cardHolderDisplay, formattedHolder);
+        e.target.value = value;
     };
 
     const handleExpiryChange = () => {

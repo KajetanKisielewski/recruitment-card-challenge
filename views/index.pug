@@ -1,43 +1,46 @@
 extends defaults/layout.pug
 include defaults/mixins.pug
 
+    head
+        link(href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet")
+
 block content
     .container
-        .card-preview
-            .card__image
-                +addPicture('chip.png', 'card__image__chip')
-                +addPicture('mastercard.png', 'card__image__mastercard')
-            .card__number #### #### #### ####
-            .card__holder
-                span.card__holder-text Card Holder
-                span.card__holder-name AD SOYAD
-            .card__expires
-                span.card__expires-text Expires
-                span.card__expires-month MM/
-                span.card__expires-year YY
+        section.card-preview
+            +addBackground('background.jpg', 'card-preview__background')
+            .card-preview__image
+                +addPicture('chip.png', 'card-preview__image--chip')
+                +addPicture('mastercard.png', 'card-preview__image--mastercard')
+            .card-preview__number #### #### #### ####
+            .card-preview__holder
+                span.card-preview__holder-text Card Holder
+                span.card-preview__holder-name AD SOYAD
+            .card-preview__expires
+                span.card-preview__expires-text Expires
+                span.card-preview__expires-month MM/
+                span.card-preview__expires-year YY
 
-
-        form.card__form
-            .card__number
+        form.card-form
+            .card-form__number
                 label(for="card-number") Card Number
-                input#card-number.card__input(type="text", placeholder="Enter card number")
-            .card__name
+                input#card-number.card-form__input(type="text", placeholder="Enter card number", maxlength="19", inputmode="numeric")
+            .card-form__name
                 label(for="card-name") Card Name
-                input#card-name.card__input(type="text", placeholder="Enter card holder name")
+                input#card-name.card-form__input(type="text", placeholder="Enter card holder name", maxlength="30")
 
-            .expiration-cvv-row
-                .expiration-group
+            .card-form__expiration-cvv-row
+                .card-form__expiration-group
                     label(for="expiration-month") Expiration Date
-                    select#expiration-month.card__select
+                    select#expiration-month.card-form__select
                         option Month
-                        option January
-                        option February
-                    select#expiration-year.card__select
+                        each month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+                            option= month
+                    select#expiration-year.card-form__select
                         option Year
-                        option 2023
-                        option 2024
-                .cvv-group
+                        each year in [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032]
+                            option= year
+                .card-form__cvv-group
                     label(for="cvv") CVV
-                    input#cvv.card__input(type="text", placeholder="CVV", maxlength="3")
+                    input#cvv.card-form__input(type="text", placeholder="CVV", maxlength="3")
 
-            button.card__submit(type="submit") Submit
+            button.card-form__submit(type="submit") Submit
