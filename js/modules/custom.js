@@ -10,10 +10,37 @@ export default function(){
         yearDisplay: document.querySelector(".card-preview__expires-year")
     };
 
+    const detectCardBrand = (number) => {
+        const cardPatterns = {
+            visa: /^4/,
+            mastercard: /^(5[1-5]|22[2-7][1-9])/,
+        };
+
+        if (cardPatterns.visa.test(number)) {
+            return 'visa';
+        } else if (cardPatterns.mastercard.test(number)) {
+            return 'mastercard';
+        } else {
+            return 'visa';
+        }
+    };
+
+    const updateCardLogo = (brand) => {
+        const visaLogo = document.querySelector('.card-preview__image--visa');
+        const mastercardLogo = document.querySelector('.card-preview__image--mastercard');
+
+        if (brand === 'visa') {
+            visaLogo.style.display = 'block';
+            mastercardLogo.style.display = 'none';
+        } else if (brand === 'mastercard') {
+            mastercardLogo.style.display = 'block';
+            visaLogo.style.display = 'none';
+        }
+    };
+
     const formatCardNumberForDisplay = (value) => {
         const cleanedValue = value.replace(/\D/g, "");
-        const formattedCardNumber = cleanedValue.padEnd(16, '#');
-        return formattedCardNumber.match(/.{1,4}/g).join(" ");
+        return cleanedValue.padEnd(16, '#').match(/.{1,4}/g) || [];
     };
 
     const formatCardNumberForInput = (value) => {
@@ -39,8 +66,20 @@ export default function(){
         const rawValue = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
         const limitedValue = rawValue.slice(0, 16);
         e.target.value = formatCardNumberForInput(limitedValue);
+
+        while (elements.cardNumberDisplay.firstChild) {
+            elements.cardNumberDisplay.removeChild(elements.cardNumberDisplay.firstChild);
+        }
+
         const formattedNumberForDisplay = formatCardNumberForDisplay(limitedValue);
-        updateCardDisplay(elements.cardNumberDisplay, formattedNumberForDisplay);
+        formattedNumberForDisplay.forEach(group => {
+            const span = document.createElement('span');
+            span.textContent = group;
+            elements.cardNumberDisplay.appendChild(span);
+        });
+
+        const cardBrand = detectCardBrand(limitedValue);
+        updateCardLogo(cardBrand);
     };
 
     const handleCardHolderInput = (e) => {

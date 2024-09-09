@@ -10,15 +10,21 @@ block content
             +addBackground('background.jpg', 'card-preview__background')
             .card-preview__image
                 +addPicture('chip.png', 'card-preview__image--chip')
+                +addPicture('visa.png', 'card-preview__image--visa')
                 +addPicture('mastercard.png', 'card-preview__image--mastercard')
-            .card-preview__number #### #### #### ####
+            .card-preview__number
+                each _ in [1, 2, 3, 4]
+                    span
+                        each _ in [1, 2, 3, 4]
+                            span #
             .card-preview__holder
                 span.card-preview__holder-text Card Holder
                 span.card-preview__holder-name AD SOYAD
             .card-preview__expires
                 span.card-preview__expires-text Expires
-                span.card-preview__expires-month MM/
-                span.card-preview__expires-year YY
+                span.card-preview__expires-date
+                    span.card-preview__expires-month MM/
+                    span.card-preview__expires-year YY
 
         form.card-form
             .card-form__number
